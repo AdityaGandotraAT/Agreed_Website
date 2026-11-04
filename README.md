@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# website-agreed
 
-## Getting Started
+Next.js App Router project with Tailwind CSS. Pages and site content are not built yet.
 
-First, run the development server:
+## Scripts
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Application code lives in `src`. Import it with the `@/*` alias, for example `@/constants/site`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+src/
+  app/            routes, root layout, and global styles
+  components/
+    common/       shared UI
+    layout/       shell components such as header and footer
+    sections/     page sections
+  hooks/          client hooks
+  lib/            shared modules that are not external integrations
+  services/       API calls and external integrations
+  utils/          pure utility functions
+  constants/      shared constants
+  types/          shared JSDoc types
+  styles/         extra stylesheets, when they should not live in app/globals.css
+public/
+  images/         image assets
+  icons/          icon assets
+  fonts/          self-hosted font files, when next/font is not used
+```
 
-## Learn More
+Add a folder when the first file needs it. Server Components are the default. Add `"use client"` only for state, effects, or browser APIs.
 
-To learn more about Next.js, take a look at the following resources:
+## Environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copy `.env.example` to `.env.local`. Variables without the `NEXT_PUBLIC_` prefix stay on the server. Do not commit `.env.local` or secrets.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Styling
 
-## Deploy on Vercel
+Tailwind CSS 4 is loaded by Turbopack through `@tailwindcss/turbopack`. Shared tokens live in `src/app/globals.css`. There is no separate PostCSS config because this setup does not use the PostCSS Tailwind plugin.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Update `src/constants/site.js` when the site title and description are known.

@@ -1,0 +1,586 @@
+.radar {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: clamp(72px, 6vw, 108px) var(--g);
+  overflow-x: clip;
+  background: #eeeee8;
+  color: #0d0e10;
+  font-family: var(--rw-font-b), Inter, sans-serif;
+}
+
+.radar-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(32px, 4vw, 72px);
+  width: 100%;
+  max-width: calc(min(1520px, max(1280px, 92vw)) + var(--g) * 2);
+  margin: 0 auto;
+}
+
+.radar-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  max-width: 520px;
+}
+
+.radar-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 7px 13px 7px 11px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #0d0e10 6%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #0d0e10 12%, transparent);
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.radar-kicker-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--rw-brass);
+}
+
+.radar-title {
+  margin: 0;
+  font-family: var(--rw-font-d), "Funnel Display", sans-serif;
+  font-size: clamp(40px, 4.6vw, 68px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.042em;
+  text-wrap: balance;
+}
+
+.radar-line {
+  display: block;
+}
+
+.radar-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.04em 0.12em;
+  margin: 0 -0.04em -0.12em;
+  white-space: pre;
+}
+
+.radar-word-in {
+  display: inline-block;
+  translate: 0 108%;
+  transition: translate 0.5s cubic-bezier(0.2, 0.85, 0.15, 1);
+}
+
+.radar.is-on .radar-word-in {
+  translate: 0 0;
+}
+
+.radar-mark {
+  position: relative;
+  isolation: isolate;
+  padding: 0 0.06em;
+  color: #fff;
+}
+
+.radar-mark::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 0.12em;
+  bottom: 0.02em;
+  border-radius: 0.16em;
+  background: var(--rw-brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s cubic-bezier(0.7, 0, 0.2, 1) 0.45s;
+}
+
+.radar.is-on .radar-mark::before {
+  transform: none;
+}
+
+.radar-body {
+  max-width: 440px;
+  margin: 0;
+  color: color-mix(in srgb, #75766f 60%, #0d0e10);
+  font-size: 17px;
+  line-height: 1.5;
+  opacity: 0.72;
+  translate: 0 8px;
+  transition: opacity 0.4s ease, translate 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.radar.is-on .radar-body {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.radar-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 440px;
+  padding-top: 18px;
+  border-top: 1px solid #dcdcd3;
+  opacity: 0.72;
+  translate: 0 8px;
+  transition: opacity 0.4s ease 0.08s, translate 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.08s;
+}
+
+.radar.is-on .radar-foot {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.radar-rate,
+.radar-read {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.radar-stars {
+  letter-spacing: 0.12em;
+  text-transform: none;
+}
+
+.radar-read {
+  color: color-mix(in srgb, #75766f 60%, #0d0e10);
+}
+
+.radar-read-l {
+  flex: none;
+}
+
+.radar-read-v {
+  min-width: 0;
+  color: #0d0e10;
+  overflow-wrap: break-word;
+}
+
+.radar-live {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--rw-brass);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #0d0e10 35%, transparent);
+}
+
+.radar-live::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--rw-brass);
+  animation: radar-pulse 1.8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.radar-stage {
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0.72;
+  translate: 0 12px;
+  transition: opacity 0.45s ease 0.05s, translate 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s;
+}
+
+.radar.is-on .radar-stage {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.radar-scope {
+  position: relative;
+  width: min(500px, 100%);
+  aspect-ratio: 1;
+  flex: none;
+  border-radius: 50%;
+  --nm: 14px;
+}
+
+.radar-grid-dots {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, #fff 70%, transparent), color-mix(in srgb, #fff 20%, transparent) 70%),
+    radial-gradient(color-mix(in srgb, #0d0e10 16%, transparent) 1px, transparent 1.3px) 0 0 / 14px 14px;
+  -webkit-mask: radial-gradient(circle, #000 62%, transparent 71%);
+  mask: radial-gradient(circle, #000 62%, transparent 71%);
+}
+
+.radar-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.radar-ring {
+  fill: none;
+  stroke: color-mix(in srgb, #0d0e10 16%, transparent);
+  stroke-width: 0.35;
+}
+
+.radar-ring-o {
+  stroke: color-mix(in srgb, #0d0e10 38%, transparent);
+  stroke-width: 0.5;
+}
+
+.radar-cross {
+  fill: none;
+  stroke: color-mix(in srgb, #0d0e10 14%, transparent);
+  stroke-width: 0.3;
+}
+
+.radar-diag {
+  stroke-dasharray: 1 2.2;
+}
+
+.radar-tick {
+  stroke: color-mix(in srgb, #0d0e10 30%, transparent);
+  stroke-width: 0.3;
+}
+
+.radar-tick-l {
+  stroke: color-mix(in srgb, #0d0e10 60%, transparent);
+  stroke-width: 0.45;
+}
+
+.radar-deg {
+  position: absolute;
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, #75766f 60%, #0d0e10);
+}
+
+.radar-deg-0 { left: 50%; top: -4px; translate: -50% -100%; }
+.radar-deg-1 { right: -6px; top: 50%; translate: 100% -50%; }
+.radar-deg-2 { left: 50%; bottom: -4px; translate: -50% 100%; }
+.radar-deg-3 { left: -6px; top: 50%; translate: -100% -50%; }
+
+.radar-rl {
+  position: absolute;
+  translate: 5px -50%;
+  padding: 1px 3px;
+  border-radius: 3px;
+  background: color-mix(in srgb, #eeeee8 80%, transparent);
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #0d0e10 78%, transparent);
+  pointer-events: none;
+}
+
+.radar-sweep {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  will-change: transform;
+  background: conic-gradient(
+    from 285deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--rw-brass) 8%, transparent) 30deg,
+    color-mix(in srgb, var(--rw-brass) 58%, transparent) 68deg,
+    color-mix(in srgb, var(--rw-brass) 90%, transparent) 75deg,
+    transparent 75.2deg
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.3s;
+}
+
+.radar.is-on .radar-sweep,
+.radar.is-parked .radar-sweep {
+  opacity: 1;
+}
+
+.radar-edge {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1.5px;
+  height: 50%;
+  translate: -50% 0;
+  background: linear-gradient(0deg, color-mix(in srgb, #0d0e10 10%, transparent), #0d0e10);
+}
+
+.radar-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: #0d0e10;
+  box-shadow:
+    0 0 0 4px var(--rw-brass),
+    0 0 0 5px color-mix(in srgb, #0d0e10 30%, transparent);
+}
+
+.radar-core i {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px #0d0e10;
+  animation: radar-pulse 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+.radar-blip {
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  height: 0;
+}
+
+.radar-dot {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, #0d0e10 45%, transparent);
+  transition: background 0.5s, scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.radar-dot::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px var(--rw-brass),
+    0 0 14px 2px color-mix(in srgb, var(--rw-brass) 70%, transparent);
+  opacity: 0;
+}
+
+.radar-name {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  translate: 0 -50%;
+  white-space: nowrap;
+  font-size: max(12px, var(--nm));
+  line-height: 1;
+  color: color-mix(in srgb, #0d0e10 78%, transparent);
+  cursor: default;
+  transition: color 1.4s ease;
+}
+
+.radar-blip.is-left .radar-name {
+  right: 12px;
+  left: auto;
+}
+
+.radar-grot .radar-name {
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-size: max(12px, calc(var(--nm) * 1.08));
+}
+
+.radar-round .radar-name {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  font-size: max(12px, calc(var(--nm) * 1.12));
+}
+
+.radar-cond .radar-name {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: max(12px, calc(var(--nm) * 0.92));
+  transform: scaleX(0.84);
+  transform-origin: left center;
+}
+
+.radar-cond.is-left .radar-name {
+  transform-origin: right center;
+}
+
+.radar-mono .radar-name {
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: max(12px, calc(var(--nm) * 0.8));
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.radar-badge {
+  position: absolute;
+  left: 0;
+  top: -14px;
+  translate: -50% -100%;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ff3e88;
+  color: #0d0e10;
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow:
+    0 0 0 2.5px #eeeee8,
+    0 10px 20px -10px rgba(0, 0, 0, 0.5);
+  scale: 0.3;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transition:
+    scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.4s,
+    translate 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.radar-blip:hover,
+.radar-blip.is-hit {
+  z-index: 4;
+}
+
+.radar-blip:hover .radar-name,
+.radar-blip.is-hit .radar-name {
+  color: #0d0e10;
+  transition-duration: 0.25s;
+}
+
+.radar-blip:hover .radar-dot,
+.radar-blip.is-hit .radar-dot {
+  background: #0d0e10;
+  scale: 1.25;
+  transition-duration: 0.2s;
+}
+
+.radar-blip:hover .radar-dot::after,
+.radar-blip.is-hit .radar-dot::after {
+  animation: radar-ping 1.5s cubic-bezier(0.2, 0.6, 0.3, 1) both;
+}
+
+.radar-blip:hover .radar-badge,
+.radar-blip.is-hit .radar-badge {
+  scale: 1;
+  opacity: 1;
+  translate: -50% calc(-100% - 4px);
+  transition-duration: 0.5s, 0.2s, 0.5s;
+}
+
+.radar.is-parked .radar-blip.is-hit .radar-dot::after {
+  opacity: 0.9;
+  transform: scale(1.6);
+  animation: none;
+}
+
+@keyframes radar-pulse {
+  0% { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(3.2); }
+}
+
+@keyframes radar-ping {
+  0% { opacity: 1; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(4.2); }
+}
+
+@media (max-width: 1099px) {
+  .radar-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 32px;
+  }
+
+  .radar-scope {
+    --nm: 12px;
+  }
+
+  .radar-body {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 809px) {
+  .radar {
+    padding: 64px var(--g) 56px;
+  }
+
+  .radar-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .radar-copy {
+    max-width: none;
+    gap: 18px;
+  }
+
+  .radar-title {
+    font-size: clamp(40px, 11vw, 52px);
+  }
+
+  .radar-body {
+    font-size: 16px;
+  }
+
+  .radar-stage {
+    justify-content: center;
+  }
+
+  .radar-scope {
+    width: min(350px, 100%);
+    --nm: 11px;
+  }
+
+  .radar-deg {
+    display: none;
+  }
+
+  .radar-rl {
+    font-size: 11px;
+  }
+
+  .radar-badge {
+    padding: 3px 7px;
+    font-size: 11px;
+  }
+
+  .radar-grid-dots {
+    background-size: auto, 11px 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-word-in,
+  .radar-mark::before,
+  .radar-body,
+  .radar-foot,
+  .radar-stage {
+    transition: none !important;
+    translate: 0 0 !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .radar-live::after,
+  .radar-core i,
+  .radar-blip .radar-dot::after {
+    animation: none !important;
+  }
+}
