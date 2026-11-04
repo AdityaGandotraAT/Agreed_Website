@@ -519,11 +519,13 @@
 @media (max-width: 809px) {
   .radar {
     padding: 64px var(--g) 56px;
+    overflow-x: clip;
   }
 
   .radar-grid {
     grid-template-columns: 1fr;
     gap: 40px;
+    max-width: 100%;
   }
 
   .radar-copy {
@@ -532,7 +534,7 @@
   }
 
   .radar-title {
-    font-size: clamp(40px, 11vw, 52px);
+    font-size: clamp(36px, 10vw, 48px);
   }
 
   .radar-body {
@@ -541,11 +543,15 @@
 
   .radar-stage {
     justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   .radar-scope {
-    width: min(350px, 100%);
-    --nm: 11px;
+    width: min(300px, calc(100vw - (var(--g) * 2) - 24px));
+    max-width: 100%;
+    --nm: 10px;
   }
 
   .radar-deg {
@@ -553,12 +559,13 @@
   }
 
   .radar-rl {
-    font-size: 11px;
+    font-size: 10px;
+    max-width: 88px;
   }
 
   .radar-badge {
     padding: 3px 7px;
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .radar-grid-dots {

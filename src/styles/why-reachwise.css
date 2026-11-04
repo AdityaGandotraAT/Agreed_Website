@@ -381,14 +381,26 @@
   .why {
     gap: 36px;
     padding: 72px var(--g);
+    overflow-x: clip;
+  }
+
+  .why-top,
+  .why-card {
+    max-width: 100%;
   }
 
   .why-copy {
     gap: 18px;
+    max-width: 100%;
+  }
+
+  .why-side {
+    max-width: 100%;
+    margin-left: 0;
   }
 
   .why-title {
-    font-size: clamp(40px, 11.4vw, 54px);
+    font-size: clamp(36px, 10vw, 48px);
   }
 
   .why-body {
@@ -399,10 +411,10 @@
     gap: 8px 14px;
   }
 
-  /* one continuous ink field — same composition as desktop, taller for phone */
   .why-card {
-    height: min(72vh, 560px);
-    min-height: 460px;
+    height: min(68vh, 520px);
+    min-height: 420px;
+    border-radius: 18px;
   }
 
   .why-ratio {

@@ -122,40 +122,38 @@ export default function HomeHero() {
   }, []);
 
   useEffect(() => {
-    lastScrollY.current = Math.max(0, window.scrollY || 0);
+    lastScrollY.current = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
 
     const readY = () => Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
 
-    // Mouse wheel / trackpad: down = hide nav, up = show nav
-    const onWheel = (event) => {
-      if (menuOpen) return;
-      if (event.deltaY > 2 && readY() > 8) setNavHidden(true);
-      else if (event.deltaY < -2) setNavHidden(false);
-    };
-
-    // Touch / scrollbar: same rule from scroll direction
+    // One scroll listener only — wheel + scroll together made the nav
+    // flash in on scroll-up then immediately hide again.
     const onScroll = () => {
       if (menuOpen) return;
       const y = readY();
       const delta = y - lastScrollY.current;
       setSolidNav(y > 48);
-      if (y <= 8) setNavHidden(false);
-      else if (delta > 6) setNavHidden(true);
-      else if (delta < -6) setNavHidden(false);
+
+      if (y <= 8) {
+        setNavHidden(false);
+      } else if (delta < -4) {
+        // Scroll up → bring nav forward and keep it
+        setNavHidden(false);
+      } else if (delta > 8) {
+        // Scroll down → tuck nav away
+        setNavHidden(true);
+      }
+
       lastScrollY.current = y;
     };
 
     onScroll();
-    window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("scroll", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, [menuOpen]);
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 759px)");
+    const media = window.matchMedia("(max-width: 1099px)");
     const apply = () => {
       const matches = media.matches;
       setNarrow(matches);
@@ -302,57 +300,24 @@ export default function HomeHero() {
 
   const lines = headingLines(siteConfig.heading);
 
-  return (
-    <section
-      ref={root}
-      className={`rwh${entered ? " is-in" : ""}${glReady ? " is-gl" : ""}`}
-      aria-label="Reachwise"
+  const nav = (
+    <nav
+      className={`rwh-nav${entered ? " is-in" : ""}${solidNav ? " is-solid" : ""}${navHidden && !menuOpen ? " is-away" : ""}${menuOpen ? " is-open" : ""}`}
+      aria-label="Main"
     >
-      <div className="rwh-bg" aria-hidden="true">
-        {/* The canvas replaces this frame. A plain image keeps the first paint and the WebGL upload on the same file. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="rwh-img" src={siteConfig.photo} alt="" fetchPriority="high" decoding="async" />
-        <canvas ref={canvas} className="rwh-cv" />
-        {!glReady && <i className="rwh-stillring" />}
-        <i className="rwh-shade" />
-      </div>
-
-      <nav
-        className={`rwh-nav${entered ? " is-in" : ""}${solidNav ? " is-solid" : ""}${navHidden && !menuOpen ? " is-away" : ""}${menuOpen ? " is-open" : ""}`}
-        aria-label="Main"
-      >
+      <div className="rwh-shell">
         <div className="rwh-bar">
           <Link className="rwh-logo" href="/" onClick={() => setMenuOpen(false)}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="rwh-mark" src="/images/agreed-logo.png" alt="Agreed" />
+            <img className="rwh-mark rwh-mark-light" src="/images/agreed-logo.png" alt="Agreed" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="rwh-mark rwh-mark-dark"
+              src="/images/agreed-logo-on-dark.png"
+              alt=""
+              aria-hidden="true"
+            />
           </Link>
-
-          <ul
-            id="site-menu"
-            className={`rwh-links${menuOpen ? " is-open" : ""}`}
-            onClick={() => setMenuOpen(false)}
-          >
-            <li className="rwh-menu-home">
-              <Link href="/">
-                <svg className="rwh-menu-mark" viewBox="0 0 32 32" aria-hidden="true">
-                  <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" strokeWidth="2.4" />
-                  <circle cx="16" cy="16" r="3.4" fill="currentColor" />
-                </svg>
-                Home
-              </Link>
-            </li>
-            {siteConfig.nav.map((item, index) => (
-              <li key={item.href}>
-                <Link href={item.href}>
-                  <span className="rwh-menu-no">{String(index + 2).padStart(2, "0")}</span>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-            <li className="rwh-links-cta">
-              <Button href={siteConfig.bookHref} label={siteConfig.navCta} kind="quiet" icon="cal" />
-            </li>
-          </ul>
 
           <span className="rwh-nav-cta">
             <Button href={siteConfig.bookHref} label={siteConfig.navCta} kind="quiet" icon="cal" />
@@ -366,10 +331,70 @@ export default function HomeHero() {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen((open) => !open)}
           >
-            <span className="rwh-menu-icon" aria-hidden="true" />
+            {menuOpen ? (
+              <svg className="rwh-menu-x" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                />
+              </svg>
+            ) : (
+              <span className="rwh-menu-icon" aria-hidden="true" />
+            )}
           </button>
         </div>
-      </nav>
+
+        <ul
+          id="site-menu"
+          className={`rwh-links${menuOpen ? " is-open" : ""}`}
+          onClick={() => setMenuOpen(false)}
+        >
+          <li className="rwh-menu-home">
+            <Link href="/">
+              <svg className="rwh-menu-mark" viewBox="0 0 32 32" aria-hidden="true">
+                <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" strokeWidth="2.4" />
+                <circle cx="16" cy="16" r="3.4" fill="currentColor" />
+              </svg>
+              Home
+            </Link>
+          </li>
+          {siteConfig.nav.map((item, index) => (
+            <li key={item.href}>
+              <Link href={item.href}>
+                <span className="rwh-menu-no">{String(index + 2).padStart(2, "0")}</span>
+                {item.label}
+              </Link>
+            </li>
+          ))}
+          <li className="rwh-links-cta">
+            <Button href={siteConfig.bookHref} label={siteConfig.navCta} kind="quiet" icon="cal" />
+          </li>
+        </ul>
+      </div>
+    </nav>
+  );
+
+  return (
+    <>
+      {/* Outside .rwh so isolation/stacking never traps the nav behind later sections */}
+      {nav}
+
+      <section
+        ref={root}
+        className={`rwh${entered ? " is-in" : ""}${glReady ? " is-gl" : ""}`}
+        aria-label="Reachwise"
+      >
+      <div className="rwh-bg" aria-hidden="true">
+        {/* The canvas replaces this frame. A plain image keeps the first paint and the WebGL upload on the same file. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="rwh-img" src={siteConfig.photo} alt="" fetchPriority="high" decoding="async" />
+        <canvas ref={canvas} className="rwh-cv" />
+        {!glReady && <i className="rwh-stillring" />}
+        <i className="rwh-shade" />
+      </div>
 
       {!narrow && (
         <p className="rwh-hint rise d4">
@@ -443,6 +468,7 @@ export default function HomeHero() {
         </i>
         <i className="rwh-cur-d" />
       </div>
-    </section>
+      </section>
+    </>
   );
 }
