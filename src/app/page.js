@@ -1,3 +1,7 @@
+import CaseStudies from "@/components/sections/case-studies";
+import ContentWall from "@/components/sections/content-wall";
+import HowWeWork from "@/components/sections/how-we-work";
+import TheNumbers from "@/components/sections/the-numbers";
 import ClientRadar from "@/components/sections/client-radar";
 import HomeHero from "@/components/sections/home-hero";
 import ServicesBoard from "@/components/sections/services-board";
@@ -16,6 +20,10 @@ export default function HomePage() {
       <ClientRadar />
       <WhyReachwise />
       <ServicesBoard />
+      <CaseStudies />
+      <HowWeWork />
+      <TheNumbers />
+      <ContentWall />
     </main>
   );
 }

@@ -1,0 +1,487 @@
+.cases {
+  --cases-accent: var(--rw-brass);
+  width: 100%;
+  padding: clamp(72px, 9vw, 120px) var(--g) clamp(64px, 8vw, 110px);
+  background: var(--rw-night);
+  color: #f4f4f0;
+  font-family: var(--rw-font-b), Inter, sans-serif;
+}
+
+.cases,
+.cases * {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.cases-top,
+.cases-tabs,
+.cases-stage,
+.cases-foot {
+  width: 100%;
+  max-width: calc(min(1520px, max(1280px, 92vw)) + var(--g) * 2);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cases-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(24px, 4vw, 72px);
+  align-items: end;
+}
+
+.cases-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 8%, transparent);
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.cases-kicker i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cases-accent);
+}
+
+.cases-title {
+  margin: 0;
+  max-width: 11em;
+  font-family: var(--rw-font-d), "Funnel Display", sans-serif;
+  font-size: clamp(48px, 5.4vw, 80px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+}
+
+.cases-line {
+  display: block;
+}
+
+.cases-mark {
+  color: var(--cases-accent);
+}
+
+.cases-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  max-width: 420px;
+  margin-left: auto;
+  padding-bottom: 8px;
+}
+
+.cases-body {
+  margin: 0;
+  color: color-mix(in srgb, #fff 72%, transparent);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.cases-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 6px 8px 6px 18px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 8%, transparent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.cases-all:hover {
+  background: #fff;
+  color: var(--rw-ink);
+}
+
+.cases-all-ico {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: color-mix(in srgb, #fff 12%, transparent);
+}
+
+.cases-all:hover .cases-all-ico {
+  background: var(--cases-accent);
+  color: #fff;
+}
+
+.cases-all-ico svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cases-tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 36px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.cases-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.cases-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  min-height: 58px;
+  padding: 6px 16px 6px 6px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 8%, transparent);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.cases-tab.is-on {
+  background: #fff;
+  color: var(--rw-ink);
+}
+
+.cases-tab img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cases-tab b,
+.cases-tab em {
+  display: block;
+  font-style: normal;
+}
+
+.cases-tab b {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cases-tab em {
+  margin-top: 2px;
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 11px;
+  opacity: 0.62;
+}
+
+.cases-stage {
+  position: relative;
+  height: min(560px, 62vh);
+  min-height: 380px;
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #111;
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+  container-type: inline-size;
+}
+
+.cases-shot {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.cases-shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.cases-shot.is-before {
+  z-index: 2;
+  border-right: 1px solid color-mix(in srgb, #fff 70%, transparent);
+}
+
+.cases-shot.is-before .cases-chip {
+  max-width: calc(100% - 20px);
+  white-space: normal;
+}
+
+.cases-shot.is-before img {
+  inset: auto;
+  top: 0;
+  left: 0;
+  width: 100cqi;
+  height: 100%;
+  max-width: none;
+  filter: grayscale(1) contrast(0.92);
+}
+
+.cases-chip,
+.cases-flag {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cases-chip {
+  top: 18px;
+  left: 18px;
+  padding: 8px 12px;
+  background: #fff;
+  color: var(--rw-ink);
+}
+
+.cases-chip i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff4d8d;
+}
+
+.cases-chip.is-metric {
+  left: auto;
+  right: 18px;
+  background: color-mix(in srgb, #111 55%, transparent);
+  color: #fff;
+}
+
+.cases-flag {
+  left: 22px;
+  bottom: 118px;
+  color: color-mix(in srgb, #fff 78%, transparent);
+}
+
+.cases-flag.is-after {
+  left: auto;
+  right: 28px;
+}
+
+.cases-num {
+  position: absolute;
+  left: 22px;
+  bottom: 28px;
+  z-index: 2;
+  font-family: var(--rw-font-d), "Funnel Display", sans-serif;
+  font-size: clamp(64px, 8vw, 120px);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, #fff 82%, transparent);
+}
+
+.cases-num.is-after {
+  left: auto;
+  right: 28px;
+  color: var(--cases-accent);
+}
+
+.cases-num-sizer {
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+.cases-num-value {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  white-space: nowrap;
+}
+
+.cases-handle {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, #111 72%, transparent);
+  color: #fff;
+  box-shadow: 0 0 0 6px color-mix(in srgb, #fff 18%, transparent);
+  transform: translate(-50%, -50%);
+  cursor: ew-resize;
+}
+
+.cases-handle svg {
+  width: 22px;
+  height: 22px;
+}
+
+.cases-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: end;
+  margin-top: 28px;
+}
+
+.cases-meta {
+  margin: 0 0 10px;
+  font-family: var(--rw-font-m), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.cases-name {
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--rw-font-d), "Funnel Display", sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+.cases-detail {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
+
+.cases-detail p {
+  margin: 0;
+  max-width: 42ch;
+  color: color-mix(in srgb, #fff 78%, transparent);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.cases-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.cases-tags span {
+  padding: 7px 12px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 22%, transparent);
+  font-size: 13px;
+}
+
+.cases-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  margin-left: auto;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--cases-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.cases-read svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cases-read:hover {
+  background: #fff;
+  color: var(--rw-ink);
+}
+
+@media (max-width: 1099px) {
+  .cases-tabs {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .cases-tab {
+    min-height: 52px;
+  }
+
+  .cases-tab img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cases-top,
+  .cases-foot {
+    grid-template-columns: 1fr;
+  }
+
+  .cases-side,
+  .cases-title,
+  .cases-name {
+    max-width: none;
+  }
+
+  .cases-side {
+    margin-left: 0;
+  }
+
+  .cases-read {
+    margin-left: 0;
+  }
+
+  .cases-stage {
+    height: 460px;
+  }
+}
+
+@media (max-width: 759px) {
+  .cases {
+    padding: 72px var(--g);
+  }
+
+  .cases-title {
+    font-size: clamp(44px, 12vw, 64px);
+  }
+
+  .cases-stage {
+    height: min(420px, 78vw);
+    min-height: 0;
+  }
+
+  .cases-num {
+    font-size: 44px;
+  }
+
+  .cases-flag {
+    font-size: 11px;
+  }
+
+  .cases-handle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .cases-flag {
+    bottom: 88px;
+  }
+}
