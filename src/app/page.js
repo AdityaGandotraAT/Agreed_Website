@@ -1,5 +1,7 @@
 import CaseStudies from "@/components/sections/case-studies";
 import ContentWall from "@/components/sections/content-wall";
+import TeamGrid from "@/components/sections/team-grid";
+import Reviews from "@/components/sections/reviews";
 import HowWeWork from "@/components/sections/how-we-work";
 import TheNumbers from "@/components/sections/the-numbers";
 import ClientRadar from "@/components/sections/client-radar";
@@ -24,6 +26,8 @@ export default function HomePage() {
       <HowWeWork />
       <TheNumbers />
       <ContentWall />
+      <TeamGrid />
+      <Reviews />
     </main>
   );
 }

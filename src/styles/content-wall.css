@@ -107,7 +107,7 @@
   text-transform: uppercase;
 }
 
-.wall-lift {
+.wall-pills {
   margin-bottom: 18px;
 }
 
@@ -284,16 +284,62 @@
 }
 
 @media (max-width: 759px) {
-  .wall-title {
-    font-size: clamp(42px, 12vw, 64px);
+  .wall {
+    padding-top: 64px;
   }
 
-  .wall-grid {
+  .wall-top {
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .wall-kicker {
+    margin-bottom: 14px;
+  }
+
+  .wall-title {
+    max-width: 4.35em;
+    font-size: clamp(48px, 15vw, 64px);
+    line-height: 0.86;
+  }
+
+  .wall-body {
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .wall-pills {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .wall-grid.is-phone {
+    display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .wall-grid.is-phone .wall-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .wall-card {
+    border-radius: 18px;
+    transform: none !important;
   }
 
   .wall-card img {
-    height: min(var(--h, 280px), 280px) !important;
+    height: calc(var(--h) * 0.7) !important;
+  }
+
+  .wall-card figcaption {
+    font-size: 11px;
   }
 }
 

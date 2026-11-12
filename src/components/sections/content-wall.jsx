@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/constants/site";
 import "@/styles/content-wall.css";
@@ -28,6 +28,17 @@ function plainText(value) {
     .trim();
 }
 
+function packColumns(posts) {
+  const columns = [[], []];
+  const heights = [0, 0];
+  posts.forEach((post) => {
+    const index = heights[0] <= heights[1] ? 0 : 1;
+    columns[index].push(post);
+    heights[index] += Number(post.h) || 0;
+  });
+  return columns;
+}
+
 function layoutTop(node) {
   let top = 0;
   let current = node;
@@ -42,7 +53,11 @@ function Post({ post, cardRef }) {
   return (
     <figure className="wall-card" ref={cardRef}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={post.image} alt="" style={{ height: post.h, objectPosition: post.focus || "center" }} />
+      <img
+        src={post.image}
+        alt=""
+        style={{ height: post.h, "--h": `${post.h}px`, objectPosition: post.focus || "center" }}
+      />
       {post.slide ? <span className="wall-slide">{post.slide}</span> : null}
       {post.views ? (
         <span className="wall-views">
@@ -73,7 +88,9 @@ function Post({ post, cardRef }) {
 
 export default function ContentWall() {
   const lines = splitHeading(siteConfig.contentHeading);
-  const columns = siteConfig.contentColumns || [];
+  const source = siteConfig.contentColumns || [];
+  const [phone, setPhone] = useState(false);
+  const columns = phone ? packColumns(source.flat()) : source;
   const cards = useRef([]);
 
   useEffect(() => {
@@ -92,7 +109,13 @@ export default function ContentWall() {
       }
 
       const view = window.innerHeight || 1;
+      const tight = window.matchMedia("(max-width: 759px)").matches;
       list.forEach((card) => {
+        if (tight) {
+          card.style.transform = "";
+          card.style.opacity = "";
+          return;
+        }
         const distance = view * 0.28;
         const progress = Math.min(1, Math.max(0, (view - layoutTop(card)) / distance));
         const eased = 1 - (1 - progress) ** 3;
@@ -105,15 +128,25 @@ export default function ContentWall() {
       if (!frame) frame = requestAnimationFrame(paint);
     };
 
+    const phoneQuery = window.matchMedia("(max-width: 759px)");
+    const applyPhone = () => setPhone(phoneQuery.matches);
+    const onResize = () => {
+      applyPhone();
+      requestPaint();
+    };
+    applyPhone();
+
     paint();
     window.addEventListener("scroll", requestPaint, { passive: true });
-    window.addEventListener("resize", requestPaint);
+    window.addEventListener("resize", onResize);
     motion.addEventListener("change", requestPaint);
+    phoneQuery.addEventListener("change", applyPhone);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", requestPaint);
-      window.removeEventListener("resize", requestPaint);
+      window.removeEventListener("resize", onResize);
       motion.removeEventListener("change", requestPaint);
+      phoneQuery.removeEventListener("change", applyPhone);
     };
   }, []);
 
@@ -151,11 +184,11 @@ export default function ContentWall() {
                   {stat}
                 </span>
               ))}
+              <span className="wall-lift">
+                <i aria-hidden="true" />
+                {siteConfig.contentLift}
+              </span>
             </div>
-            <p className="wall-lift">
-              <i aria-hidden="true" />
-              {siteConfig.contentLift}
-            </p>
             <Link className="wall-cta" href={siteConfig.contentCtaHref || "/#services"}>
               <span>{siteConfig.contentCta}</span>
               <i aria-hidden="true">
@@ -167,7 +200,7 @@ export default function ContentWall() {
           </div>
         </div>
 
-        <div className="wall-grid">
+        <div className={`wall-grid${phone ? " is-phone" : ""}`}>
           {columns.map((column, columnIndex) => (
             <div key={columnIndex} className="wall-col">
               {column.map((post, postIndex) => (
